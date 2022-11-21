@@ -1,0 +1,18 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background-color: #66A3BB;
+  }
+  
+  body > header { 
+    padding: 0 0.5rem .75rem 0.5rem;
+  }
+  
+  body {
+    grid-template-columns: 10% 80% 10%;
+  }
+  
+  .form-control {
+    width: 50%;
+  }
