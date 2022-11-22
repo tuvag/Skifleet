@@ -14,7 +14,7 @@ def index(request):
 
 class SkiListView(ListView):
     model = Ski
-    template_name = "ski/index.html"
+    template_name = "skis/index.html"
     context_object_name = "skis"
 
     def get_queryset(self):
@@ -29,7 +29,7 @@ class SkiListView(ListView):
 class SkiCreateView(CreateView):
     model = Ski
     fields = ('ski_number', 'technique', 'grind', 'brand', 'img', 'notes')
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('addski')
 
 
 def login_view(request):

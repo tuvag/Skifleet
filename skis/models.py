@@ -20,10 +20,6 @@ class Ski(models.Model):
 class Technique(models.Model):
     technique = models.CharField(max_length=64)
 
-class Testski(models.Model):
-    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, blank=True, null=True, related_name="testski")
-    rank = models.IntegerField()
-
 class Skitest(models.Model):
     date_of_test = models.DateField()
     temprature = models.IntegerField()
@@ -31,6 +27,11 @@ class Skitest(models.Model):
     location = models.CharField(max_length = 64)
     snow_type = models.CharField(max_length = 64)
     notes = models.CharField(max_length= 256)
-    testski = models.ManyToManyField(Testski)
+    testski = models.ManyToManyField(Ski, through='Testski')
     tester = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="tester")
+
+class Testski(models.Model):
+    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, blank=True, null=True, related_name="testski")
+    test = models.ForeignKey(Skitest, on_delete=models.CASCADE, blank=True, null=True, related_name="test")
+    rank = models.IntegerField()
 
