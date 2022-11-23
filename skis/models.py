@@ -40,17 +40,18 @@ class Technique(models.Model):
 # be best called "SkiTest". Don't start a class with "Test"; it's magic to django. 
 
 class Setting(models.Model):
-    date_of_test = models.DateField()
+    # date_of_test => just "date"; pretty clear that i's the data of the test
+    date = models.DateField()
     temprature = models.IntegerField()
     humidity = models.IntegerField(null=False)
     location = models.CharField(max_length = 64)
     snow_type = models.CharField(max_length = 64)
     notes = models.CharField(max_length= 256)
-    testski = models.ManyToManyField(Ski, through='Testski')
-    tester = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="skies_tested")
+    skis = models.ManyToManyField(Ski, related_name="settings", through='SkiTest')
+    tester = models.ForeignKey(User, on_delete=models.CASCADE, related_name="skies_tested")
 
 class SkiTest(models.Model):
-    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, blank=True, null=True, related_name="tests")
-    setting = models.ForeignKey(Skitest, on_delete=models.CASCADE, blank=True, null=True, related_name="tests")
+    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="tests")
+    setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="tests")
     rank = models.IntegerField()
 
