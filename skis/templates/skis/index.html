@@ -1,5 +1,15 @@
 {% extends "skis/layout.html" %}
 
 {% block main %}
-
+    <h1> {{ banner }} </h1>
+    {% for s in skis %}
+    <div class="card">
+        <strong>Ski number: </strong> {{ s.ski_number }}
+        <strong>Techniue : </strong> {{ s.technique }}
+        <strong>Grind: </strong> {{ s.grind }} 
+        <strong>Brand: </strong> {{ s.brand }} 
+        <strong>Notes: </strong> {{ s.notes }}
+    </div>
+    {% endfor %}
+ 
 {% endblock %}
