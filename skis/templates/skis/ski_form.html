@@ -8,6 +8,11 @@
         <label for="color" class="form-label">Choose a color for your skis:</label>
         <input type="color" id="color" value="#66A3BB" class="form-control form-control-color">
     </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add to fleet">
+    </form>
 </div>
 
 {% endblock %}

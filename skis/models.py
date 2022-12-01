@@ -1,18 +1,21 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from colorfield.fields import ColorField
 
 
 class User(AbstractUser):
     pass
 
+class Technique(models.Model):
+    technique = models.CharField(max_length=64)
 
 class Ski(models.Model):
     # ski_number: is this a unique number? if so, add "unique=true". it could also be 
     # used as the primary key, but 
-    ski_number = models.CharField(max_length = 64)
+    ski_number = models.IntegerField()
 
     # technique: do you want the technique to be a FK to the Technique class? 
-    technique = models.CharField(max_length = 64)
+    technique = models.ForeignKey(Technique, on_delete=models.CASCADE, related_name="style")
 
     # grind, brand: should these be FKs? (if it's easier for now to have this be a string,
     # keep it that way for the time being)
@@ -23,7 +26,7 @@ class Ski(models.Model):
     url_img = models.URLField()
 
     # is this an RGB value? 
-    color_tag = models.IntegerField()
+    color_tag = ColorField(default='#ffffff')
 
     notes = models.CharField(max_length = 256)
 
@@ -32,18 +35,15 @@ class Ski(models.Model):
     # you can filter based on, say, grind: "user.skis_owner.filter(grind="blahblah").
     ski_owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="skies_owned")
 
-class Technique(models.Model):
-    technique = models.CharField(max_length=64)
 
 # super confusing to have Skitest and Testski. Can you think of a better name
 # for both? SkiTest is something like "Setting". And then "Testski" is think would
 # be best called "SkiTest". Don't start a class with "Test"; it's magic to django. 
 
 class Setting(models.Model):
-    # date_of_test => just "date"; pretty clear that i's the data of the test
     date = models.DateField()
     temprature = models.IntegerField()
-    humidity = models.IntegerField(null=False)
+    humidity = models.IntegerField()
     location = models.CharField(max_length = 64)
     snow_type = models.CharField(max_length = 64)
     notes = models.CharField(max_length= 256)
@@ -51,7 +51,7 @@ class Setting(models.Model):
     tester = models.ForeignKey(User, on_delete=models.CASCADE, related_name="skies_tested")
 
 class SkiTest(models.Model):
-    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="tests")
-    setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="tests")
+    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="ski_tested")
+    setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="related_test")
     rank = models.IntegerField()
 

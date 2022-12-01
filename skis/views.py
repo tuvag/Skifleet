@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
 
-from .models import User, Ski
+from .models import User, Ski, Setting
 
 
 def index(request):
@@ -28,33 +28,13 @@ class SkiListView(ListView):
 
 class SkiCreateView(CreateView):
     model = Ski
-    fields = ('ski_number', 'technique', 'grind', 'brand', 'img', 'notes')
+    fields = ('ski_number', 'technique', 'grind','color_tag', 'brand', 'img', 'notes')
     success_url = reverse_lazy('addski')
 
-
-def login_view(request):
-    if request.method == "POST":
-
-        # Attempt to sign user in
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-
-        # Check if authentication successful
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "skis/login.html", {
-                "message": "Invalid username and/or password."
-            })
-    else:
-        return render(request, "skis/login.html")
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("index"))
+class SettingCreateView(CreateView):
+    model = Setting
+    fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+    success_url = reverse_lazy('addskitest')
 
 
 def register(request):

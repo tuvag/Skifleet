@@ -15,7 +15,7 @@
         <header>
             <nav class="navbar navbar-expand-md navbar-light" style="background-color:#66A3BB">
                 <div class="container">
-                <a class="navbar-brand" href="{% url 'index' %}"><h1 class="text-dark">SKIFLEET</h1></a>
+                <a class="navbar-brand" href="{% url 'index' %}"><img src="media/images/skifleet_logo.png" width="200px" ></a>
             <button class="nav-bar-toggler d-block d-sm-block d-md-none" data-bs-toggle="collapse" data-bs-target="#nav"
             aria-controls="nav" aria-label="Expand Navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,7 +29,7 @@
                     <a class="nav-link" href="{% url 'addski' %}">Add ski</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'skitest' %}">Ski tests</a>
+                    <a class="nav-link" href="{% url 'addskitest' %}">Ski tests</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
@@ -37,6 +37,7 @@
                 {% if user.is_authenticated %}
                 Welcome <strong>{{ user.username }}!</strong>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'password_change' %}">Change Password</a>
                     <a class="nav-link" href="{% url 'logout' %}">Log out</a>
                 </li>
                 {% else %}
