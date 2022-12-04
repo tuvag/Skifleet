@@ -1,9 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django import forms
+from .forms import SkiForm, SettingForm
 
 
 from .models import User, Ski, Setting
@@ -31,10 +33,56 @@ class SkiCreateView(CreateView):
     fields = ('ski_number', 'technique', 'grind','color_tag', 'brand', 'img', 'notes')
     success_url = reverse_lazy('addski')
 
+    def form_valid(self, form):
+        form.instance.ski_owner = self.request.user
+        return super().form_valid(form)
+
+def addski(request):
+    if request.method == "POST":
+        form = SkiForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("skis/index.html")
+        else: 
+            msg = "Invalid entry, please try again"
+            return (request, "skis/addski.html", {"form": form, "message":msg})
+    else:
+        form = SkiForm()
+        return render(request, "skis/addski.html", {"form": form})
+
 class SettingCreateView(CreateView):
     model = Setting
     fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
     success_url = reverse_lazy('addskitest')
+
+class SettingListView(ListView):
+    model = Setting
+    template_name = "skis/setting.html"
+    context_object_name = "setting"
+
+    def get_queryset(self):
+       return Setting.objects.all()
+ 
+    def get_context_data(self):
+       context = super().get_context_data()
+       context['banner'] = 'Ski Tests'
+       return context
+
+def setting(request):
+    return render(request, "skis/setting.html")
+
+def addsetting(request):
+    if request.method == "POST":
+        form = SettingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("skis/index.html")
+        else: 
+            msg = "Invalid entry, please try again"
+            return (request, "skis/addsetting.html", {"form": form, "message":msg})
+    else:
+        form = SettingForm()
+        return render(request, "skis/addsetting.html", {"form": form})
 
 
 def register(request):
@@ -67,8 +115,6 @@ def register(request):
 def contact(request):
     return render(request, "skis/contact.html")
 
-def addski(request):
-    return render(request, "skis/addski.html")
 
 def add_skitest(request):
     pass

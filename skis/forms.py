@@ -14,6 +14,16 @@ class SkiForm(forms.ModelForm):
     def set_skiowner(self, User):
         self.ski_owner = User
 
+class SettingForm(forms.ModelForm):
+    date = forms.DateField(widget=forms.DateInput(format='%d%m%Y'),input_formats=['%d%m%Y'])
+    
+    class Meta:
+        model = Setting
+        fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+
+    def set_tester(self, User):
+        self.tester = User
+
 
 class MyPasswordResetForm(PasswordResetForm):
    def is_valid(self):

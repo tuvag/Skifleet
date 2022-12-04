@@ -1,0 +1,12 @@
+{% extends "skis/layout.html" %}
+
+{% block main %}
+
+<h1>Add a Ski Test</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add Ski Test">
+</form>
+
+{% endblock %}

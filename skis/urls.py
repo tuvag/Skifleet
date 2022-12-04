@@ -8,13 +8,17 @@ from . import views, forms
 
 urlpatterns = [
     path("", views.SkiListView.as_view(), name="index"),
+    path("setting", views.SettingListView.as_view(), name="setting"),
     #path("login", views.login_view, name="login"),
     #path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("contact", views.contact, name="contact"),
-    path("addski", views.SkiCreateView.as_view(), name="addski"),
-    path("addskitest", views.SettingCreateView.as_view(), name="addskitest"),
+    path("addski", views.addski, name="addski"),
+    #path("addski", views.SkiCreateView.as_view(), name="addski"),
+    #path("addskitest", views.SettingCreateView.as_view(), name="addskitest"),
+    path("addsetting", views.addsetting, name="addsetting"),
     path("skitest", views.skitest, name="skitest"),
+    path("setting", views.setting, name="setting"),
 
     # login views
     path("login", auth_views.LoginView.as_view(), name="login"),
