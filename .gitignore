@@ -2,3 +2,40 @@
 /Skifleet-logos.jpeg
 /db.sqlite3
 /venv
+
+# Python
+*.pyc
+*~
+__pycache__/
+__pycache__
+
+# Env
+.env
+myvenv/
+venv/
+
+# Database
+db.sqlite3
+
+# Static folder at project root
+/static/
+
+# temp files for debugging email
+sent_emails
+
+# macOS
+._*
+.DS_Store
+.fseventsd
+.Spotlight-V100
+
+# Windows
+Thumbs.db*
+ehthumbs*.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio
+.vscode/
+.history/
+*.code-workspace
