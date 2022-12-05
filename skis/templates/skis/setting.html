@@ -11,14 +11,18 @@
     </span>
   </div> 
 
-<div class="card">
-  <strong>Date: </strong> 
-  <strong>Temprature : </strong>
-  <strong>Humidity: </strong>
-  <strong>Location: </strong>
-  <strong>Snow Type: </strong>
-  <strong>Notes: </strong>
-  <strong>Skis: </strong>
+{% for s in setting %}
+<div class="card m-4" onclick="location.href='{% url "setting-details" s.id %}'">
+  <div class="card-body m-3">
+    <h5><strong>Date: </strong> {{ s.date }} <br></h5>
+    <strong>Temprature : </strong> {{ s.temprature }} ℃<br> 
+    <strong>Humidity: </strong> {{ s.humidity}} % <br> 
+    <strong>Location: </strong> {{ s.location }} <br>
+    <strong>Snow Type: </strong> {{ s.snow_type }} <br>
+    <strong>Notes: </strong> {{ s.notes }} <br>
+    <strong>Skis: </strong> <br>
+  </div>
 </div>
+{% endfor %}
 
 {% endblock %}

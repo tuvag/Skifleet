@@ -3,6 +3,7 @@
 {% block main %}
 
 <h1>Add Ski to your Fleet</h1>
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

@@ -1,0 +1,24 @@
+{% extends "skis/layout.html" %}
+{% block main %}
+
+<div class="card m-4">
+    <div class="card-header"><h1>Ski Test {{ setting.date }}</h1></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-8">
+            <strong>Temprature : </strong> {{ setting.temprature }} ℃<br> 
+            <strong>Humidity: </strong> {{ setting.humidity}} % <br> 
+            <strong>Location: </strong> {{ setting.location }} <br>
+            <strong>Snow Type: </strong> {{ setting.snow_type }} <br>
+            <strong>Notes: </strong> {{ setting.notes }} <br>
+            <strong>Skis: </strong> <br>
+        </div>
+      </div>
+    </div>
+    <button onclick="location.href='{% url "update-setting" setting.id %}'">
+        Edit Setting
+     </button>
+  </div>
+
+
+{% endblock %}

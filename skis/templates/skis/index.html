@@ -3,19 +3,42 @@
 {% block main %}
 <h1>{{ banner }}</h1>
 
+<!-- <form method="GET">
 <div class="input-group p-4">
-    <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon">
+    <input type="text" ski_number="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" value='{{ request.GET.q }}'>
     <span class="input-group-btn">
       <button class="btn btn-primary" type="button"> Search</i></button>
     </span>
   </div> 
-  
-<div class="card">
-  <strong>Ski number: </strong> 
-  <strong>Techniue : </strong>
-  <strong>Grind: </strong>
-  <strong>Brand: </strong>
-  <strong>Notes: </strong>
+</form> -->
+
+<form method='GET'>
+  <input type='text' ski_number='q' value='{{ request.GET.q }}'>
+  <input class="button" type='submit' value="Search">
+</form>
+
+{% for s in skis %}
+<div class="card m-4">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-1">
+        <div style="width: 30px; height: 30px; border-radius: 8px; background-color:{{s.color_tag}}"></div> 
+      </div>
+      <div class="col-sm-8">
+        <h5><strong>Ski number: </strong> {{ s.ski_number }} <br></h5>
+        <strong>Techniue : </strong> {{ s.technique }} <br>
+        <strong>Grind: </strong> {{ s.grind }} <br>
+        <strong>Brand: </strong> {{ s.brand }} <br>
+        <strong>Notes: </strong> {{ s.notes }} <br>
+      </div>
+      {% if s.img %}
+      <div class="col-sm-3">
+        <img src="{{ s.img.url }}" class="card-img-top">
+      </div>  
+      {% endif %}
+    </div>
+  </div>
 </div>
+{% endfor %}
 
 {% endblock %}

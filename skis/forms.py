@@ -32,3 +32,12 @@ class MyPasswordResetForm(PasswordResetForm):
            self.add_error(None, "Unknown email; try again")
            return False
        return super().is_valid()
+
+
+
+class SkiSearchForm(forms.Form):
+    search_text =  forms.CharField(
+        required = False,
+        label='Search name or surname!',
+        widget=forms.TextInput(attrs={'placeholder': 'search here!'})
+    )

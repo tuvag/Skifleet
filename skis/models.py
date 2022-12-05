@@ -9,6 +9,9 @@ class User(AbstractUser):
 class Technique(models.Model):
     technique = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.technique
+
 class Ski(models.Model):
     # ski_number: is this a unique number? if so, add "unique=true". it could also be 
     # used as the primary key, but 
@@ -34,6 +37,14 @@ class Ski(models.Model):
     # can get all the skis that she owns by saying "user.skis_owned.all()" or 
     # you can filter based on, say, grind: "user.skis_owner.filter(grind="blahblah").
     ski_owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="skies_owned")
+
+    def save(self, *args, **kwargs):
+        if self.url_img and not self.img:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.url_img).read())
+            img_temp.flush()
+            self.img.save(f"image_{self.pk}", File(img_temp))
+        super(Ski, self).save(*args, **kwargs)
 
 
 # super confusing to have Skitest and Testski. Can you think of a better name
