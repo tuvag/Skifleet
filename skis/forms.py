@@ -58,6 +58,7 @@ class SettingSearchForm(forms.Form):
                   )
     search_date = forms.DateField(
                     required = False,
-                    label='Date'
+                    label='Date',
+                    widget=forms.NumberInput(attrs={'type': 'date'})
                   )
 

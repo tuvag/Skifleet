@@ -8,11 +8,12 @@ from django import forms
 from .forms import SkiForm, SettingForm, SkiSearchForm, SettingSearchForm
 from search_views.search import SearchListView
 from search_views.filters import BaseFilter
+from django_filters import BaseRangeFilter, NumberFilter, FilterSet
 
+from .models import User, Ski, Setting, SkiTest
 
-
-from .models import User, Ski, Setting
-
+#class NumberRangeFilter(BaseRangeFilter, NumberFilter):
+#    pass
 
 def index(request):
     if 'search' in request.GET:
@@ -30,9 +31,11 @@ class SkisFilter(BaseFilter):
     }
 
 class SettingsFilter(BaseFilter):
+    #temprature__range = NumberRangeFilter(field_name='temprature', lookup_expr='range')
     search_fields = {
         'search_text' : ['location', 'snow_type', 'notes'],
-        'search_temprature' : { 'operator' : '__gte', 'fields' : ['temprature'] },
+        'search_temprature' : { 'operator': '__gte', 'fields' : ['temprature'] },
+        'search_date' : ['date']
     }
 
 class SkiSearchList(SearchListView):
@@ -157,7 +160,10 @@ class SettingDeleteView(DeleteView):
 
 def ski_details(request, id):
     ski = Ski.objects.get(id= id)
-    return render(request,"skis/ski_details.html", {'ski': ski})
+    ski_test = SkiTest.objects.filter(ski=ski)
+    details_setting = Setting.objects.filter(skis=ski)
+    return render(request,"skis/ski_details.html", {'ski': ski, 'skitest': ski_test, 'setting': details_setting})
+    #return render(request,"skis/ski_details.html", {'ski': ski})
 
 def setting_details(request, id):
     setting = Setting.objects.get(id= id)

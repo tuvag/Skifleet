@@ -2,8 +2,9 @@
 {% load static %}
 {% block main %}
 {% if user.is_authenticated %}
-<h1>{{ banner }}</h1>
-
+<div class="p-3 text-center">
+  <h1 class="mb-3">Your Ski Fleet</h1>
+</div>
 <!-- <form method="GET">
 <div class="input-group p-4">
     <input type="text" ski_number="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" value='{{ request.GET.q }}'>
@@ -14,9 +15,9 @@
 </form> -->
 
 
-<form class="form-inline" action="" method="GET">
+<form class="form-control" action="" method="GET">
   {{ form }}
-  <button class="btn" type="submit">Search</button>
+  <button class="btn btn-primary" type="submit">Search</button>
   </fieldset>
 </form>
 
@@ -44,13 +45,23 @@
 </div>
 {% endfor %}
 {% else %}
-<h1>Make a home for your Ski Fleet!!</h1>
-<p>Sign up to add skis and ski tests!</p>
 
-    <a class="nav-link" href="{% url 'login' %}">Log In</a>
-    <a class="nav-link" href="{% url 'register' %}">Register</a>
-
-  <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vg.no%2Fforbruker%2Freise%2Fi%2FgPdW4k%2Fnorges-beste-langrennssted&psig=AOvVaw03A8tiJHhNQC9ALWoWu71h&ust=1670381000742000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCPDynqr84_sCFQAAAAAdAAAAABAD">
+<div class="container">
+  <div class="card">
+  <div class="card-img opacity-25 ">
+    <img src="media/images/skibilde.jpeg">
+  </div>
+  <div class="card-body card-img-overlay text-center mt-5 pt-5">
+  <h1>Make a home for your Ski Fleet!!</h1>
+  <p>Sign up to add skis and ski tests</p>
+  
+  
+      <a class="nav-link" href="{% url 'login' %}"><h3>Log In</h3></a>
+      <a class="nav-link" href="{% url 'register' %}"> <h3>Register</h3></a>
+</div>
+</div>
+</div>
+  
   {% endif %}
 
 {% endblock %}
