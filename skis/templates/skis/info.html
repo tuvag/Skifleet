@@ -1,0 +1,11 @@
+{% extends "skis/layout.html" %}
+
+{% block main %}
+
+<h1>Make a home for your Ski Fleet!!</h1>
+<p>Sign up to add skis and ski tests!</p>
+
+    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+    <a class="nav-link" href="{% url 'register' %}">Register</a>
+
+{% endblock %}

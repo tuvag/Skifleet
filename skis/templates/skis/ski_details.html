@@ -1,0 +1,38 @@
+{% extends "skis/layout.html" %}
+
+{% block main %}
+
+<div class="card m-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-1">
+          <div style="width: 30px; height: 30px; border-radius: 8px; background-color:{{ski.color_tag}}"></div> 
+        </div>
+        <div class="col-sm-8">
+          <h5><strong>Ski number: </strong> {{ ski.ski_number }} <br></h5>
+          <strong>Techniue : </strong> {{ ski.technique }} <br>
+          <strong>Grind: </strong> {{ ski.grind }} <br>
+          <strong>Brand: </strong> {{ ski.brand }} <br>
+          <strong>Notes: </strong> {{ ski.notes }} <br>
+        </div>
+        {% if s.img %}
+        <div class="col-sm-3">
+          <img src="{{ ski.img.url }}" class="card-img-top">
+        </div>  
+        {% endif %}
+        <div class="col-sm-10">
+        <button onclick="location.href='{% url "update-ski" ski.id %}'">
+            Edit Ski
+           </button>
+           <button onclick="location.href='{% url "delete-ski" ski.id %}'">
+            Delete Ski
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+

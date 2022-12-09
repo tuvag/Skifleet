@@ -9,8 +9,12 @@ from . import views, forms
 urlpatterns = [
     path("", views.SkiListView.as_view(), name="index"),
     path("setting", views.SettingListView.as_view(), name="setting"),
+    path("ski_details/<int:id>", views.ski_details, name="ski-details"),
+    path("update_ski/<int:pk>", views.SkiUpdateView.as_view(), name="update-ski"),
+    path("delete_ski/<int:pk>", views.SkiDeleteView.as_view(), name="delete-ski"),
     path("setting_details/<int:id>", views.setting_details, name="setting-details"),
-    path("update_setting/<int:id>", views.SettingUpdateView.as_view(), name="update-setting"),
+    path("update_setting/<int:pk>", views.SettingUpdateView.as_view(), name="update-setting"),
+    path("delete_setting/<int:pk>", views.SettingDeleteView.as_view(), name="delete-setting"),
     #path("login", views.login_view, name="login"),
     #path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),

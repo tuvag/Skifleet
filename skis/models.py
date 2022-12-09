@@ -61,6 +61,9 @@ class Setting(models.Model):
     skis = models.ManyToManyField(Ski, related_name="settings", through='SkiTest')
     tester = models.ForeignKey(User, on_delete=models.CASCADE, related_name="skies_tested")
 
+    def __str__(self):
+        return self.location
+
 class SkiTest(models.Model):
     ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="ski_tested")
     setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="related_test")

@@ -25,6 +25,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Home</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'setting' %}">Ski Tests</a>
                 </li>
@@ -37,7 +38,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
                 </li>
-                {% if user.is_authenticated %}
                 Welcome <strong>{{ user.username }}!</strong>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'password_change' %}">Change Password</a>
@@ -51,7 +51,6 @@
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
                     {% endif %}
-
             </ul>
         </div>
     </div>

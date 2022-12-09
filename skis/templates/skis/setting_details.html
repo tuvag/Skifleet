@@ -13,11 +13,20 @@
             <strong>Notes: </strong> {{ setting.notes }} <br>
             <strong>Skis: </strong> <br>
         </div>
-      </div>
     </div>
-    <button onclick="location.href='{% url "update-setting" setting.id %}'">
-        Edit Setting
+    </div>
+    <div class="row">
+   <div class="col-sm-2">
+     <button onclick="location.href='{% url "update-setting" setting.id %}'">
+      Edit Test
      </button>
+   </div>
+   <div class="col-sm-3">
+        <button onclick="location.href='{% url "delete-setting" setting.id %}'">
+        Delete Test
+        </button>
+    </div>
+    </div>
   </div>
 
 

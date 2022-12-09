@@ -23,6 +23,7 @@ def index(request):
         skis
         return render(request, "skis/index.html", {'skis': skis})
 
+
 class SkisFilter(BaseFilter):
     search_fields = {
         'search_text' : ['ski_number', 'technique', 'grind', 'brand', 'img', 'notes' ]
@@ -55,7 +56,7 @@ class SkiListView(ListView):
         if query:
             object_list = self.model.objects.filter(name__icontains=query)
         else:
-            object_list = Ski.objects.all()
+            object_list = Ski.objects.filter(ski_owner = self.request.user.id)
         return object_list
 
     """  query = self.request.GET.get('q')
@@ -79,6 +80,15 @@ class SkiCreateView(CreateView):
         form.instance.ski_owner = self.request.user
         return super().form_valid(form)
 
+class SkiUpdateView(UpdateView):
+    model = Ski
+    fields = ('ski_number', 'technique', 'grind', 'color_tag', 'brand', 'img', 'notes' )
+    success_url = reverse_lazy("index")
+
+class SkiDeleteView(DeleteView):
+    model = Ski
+    success_url = reverse_lazy("index")
+
 def addski(request):
     if request.method == "POST":
         form = SkiForm(request.POST)
@@ -101,10 +111,7 @@ class SettingCreateView(CreateView):
         form.instance.tester = self.request.user
         return super().form_valid(form)
 
-class SettingUpdateView(UpdateView):
-    model = Setting
-    fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
-    success_url = reverse_lazy("setting")
+
 
 class SettingListView(ListView):
     model = Setting
@@ -112,12 +119,25 @@ class SettingListView(ListView):
     context_object_name = "setting"
 
     def get_queryset(self):
-       return Setting.objects.all()
+       return Setting.objects.filter(tester = self.request.user.id)
  
     def get_context_data(self):
        context = super().get_context_data()
        context['banner'] = 'Ski Tests'
        return context
+
+class SettingUpdateView(UpdateView):
+    model = Setting
+    fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+    success_url = reverse_lazy("setting")
+
+class SettingDeleteView(DeleteView):
+    model = Setting
+    success_url = reverse_lazy("setting")
+
+def ski_details(request, id):
+    ski = Ski.objects.get(id= id)
+    return render(request,"skis/ski_details.html", {'ski': ski})
 
 def setting_details(request, id):
     setting = Setting.objects.get(id= id)

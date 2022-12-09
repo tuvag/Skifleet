@@ -1,6 +1,7 @@
 {% extends "skis/layout.html" %} 
 {% load static %}
 {% block main %}
+{% if user.is_authenticated %}
 <h1>{{ banner }}</h1>
 
 <!-- <form method="GET">
@@ -18,7 +19,7 @@
 </form>
 
 {% for s in skis %}
-<div class="card m-4">
+<div class="card m-4" onclick="location.href='{% url "ski-details" s.id %}'">
   <div class="card-body">
     <div class="row">
       <div class="col-sm-1">
@@ -40,5 +41,14 @@
   </div>
 </div>
 {% endfor %}
+{% else %}
+<h1>Make a home for your Ski Fleet!!</h1>
+<p>Sign up to add skis and ski tests!</p>
+
+    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+    <a class="nav-link" href="{% url 'register' %}">Register</a>
+
+  <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vg.no%2Fforbruker%2Freise%2Fi%2FgPdW4k%2Fnorges-beste-langrennssted&psig=AOvVaw03A8tiJHhNQC9ALWoWu71h&ust=1670381000742000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCPDynqr84_sCFQAAAAAdAAAAABAD">
+  {% endif %}
 
 {% endblock %}
