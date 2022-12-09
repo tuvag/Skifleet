@@ -36,8 +36,28 @@ class MyPasswordResetForm(PasswordResetForm):
 
 
 class SkiSearchForm(forms.Form):
+    search_ski =  forms.CharField(
+        required = False,
+        label='Search:',
+        widget=forms.TextInput(attrs={'placeholder': 'Ski details'})
+    )
+    """ search_technique =  forms.ModelChoiceField(
+        required = False,
+        widget=forms.ModelChoiceField(queryset=Technique)
+    ) """
+
+class SettingSearchForm(forms.Form):
     search_text =  forms.CharField(
         required = False,
-        label='Search name or surname!',
-        widget=forms.TextInput(attrs={'placeholder': 'search here!'})
+        label='Search:',
+        widget=forms.TextInput(attrs={'placeholder': 'Testing details'})
     )
+    search_temprature = forms.IntegerField(
+                    required = False,
+                    label='Temprature'
+                  )
+    search_date = forms.DateField(
+                    required = False,
+                    label='Date'
+                  )
+

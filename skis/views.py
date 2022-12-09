@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django import forms
-from .forms import SkiForm, SettingForm, SkiSearchForm
+from .forms import SkiForm, SettingForm, SkiSearchForm, SettingSearchForm
 from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 
@@ -26,7 +26,13 @@ def index(request):
 
 class SkisFilter(BaseFilter):
     search_fields = {
-        'search_text' : ['ski_number', 'technique', 'grind', 'brand', 'img', 'notes' ]
+        'search_ski' : ['ski_number', 'grind', 'brand', 'notes']
+    }
+
+class SettingsFilter(BaseFilter):
+    search_fields = {
+        'search_text' : ['location', 'snow_type', 'notes'],
+        'search_temprature' : { 'operator' : '__gte', 'fields' : ['temprature'] },
     }
 
 class SkiSearchList(SearchListView):
@@ -34,10 +40,24 @@ class SkiSearchList(SearchListView):
     model = Ski
     paginate_by = 10
     template_name = "skis/index.html"
+    context_object_name = "skis"
 
     # additional configuration for SearchListView
     form_class = SkiSearchForm
     filter_class = SkisFilter
+
+class SettingSearchList(SearchListView):
+    # regular django.views.generic.list.ListView configuration
+    model = Setting
+    paginate_by = 10
+    template_name = "skis/setting.html"
+    context_object_name = "setting"
+
+    form_class = Setting
+
+    # additional configuration for SearchListView
+    form_class = SettingSearchForm
+    filter_class = SettingsFilter
 
 
 class SkiListView(ListView):
@@ -119,7 +139,7 @@ class SettingListView(ListView):
     context_object_name = "setting"
 
     def get_queryset(self):
-       return Setting.objects.filter(tester = self.request.user.id)
+       return Setting.objects.filter(tester =self.request.user.id)
  
     def get_context_data(self):
        context = super().get_context_data()

@@ -13,9 +13,11 @@
   </div> 
 </form> -->
 
-<form method='GET'>
-  <input type='text' ski_number='q' value='{{ request.GET.q }}'>
-  <input class="button" type='submit' value="Search">
+
+<form class="form-inline" action="" method="GET">
+  {{ form }}
+  <button class="btn" type="submit">Search</button>
+  </fieldset>
 </form>
 
 {% for s in skis %}

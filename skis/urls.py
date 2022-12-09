@@ -7,8 +7,8 @@ from django.conf.urls.static import static
 from . import views, forms
 
 urlpatterns = [
-    path("", views.SkiListView.as_view(), name="index"),
-    path("setting", views.SettingListView.as_view(), name="setting"),
+    path("", views.SkiSearchList.as_view(), name="index"),
+    path("setting", views.SettingSearchList.as_view(), name="setting"),
     path("ski_details/<int:id>", views.ski_details, name="ski-details"),
     path("update_ski/<int:pk>", views.SkiUpdateView.as_view(), name="update-ski"),
     path("delete_ski/<int:pk>", views.SkiDeleteView.as_view(), name="delete-ski"),
