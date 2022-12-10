@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django import forms
-from .forms import SkiForm, SettingForm, SkiSearchForm, SettingSearchForm
+from .forms import SettingForm, SkiSearchForm, SettingSearchForm, SettingCreationMultiForm
 from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from django_filters import BaseRangeFilter, NumberFilter, FilterSet
@@ -44,17 +44,23 @@ class SettingCreateView(CreateWithInlinesView):
         return super().form_valid(form) """
 
 class SettingCreateView(CreateView):
-    model = Setting
-    fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+    form_class = SettingCreationMultiForm
+    #fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
     success_url = reverse_lazy('addskitest')
+    template_name = "skis/addsetting.html"
 
-    def get_form(self):
+    """ def get_form(self):
         form = super().get_form()
         form.fields['date'].widget = AdminDateWidget(attrs={'type': 'date'})
         return form
-
+ """
     def form_valid(self, form):
-        form.instance.tester = self.request.user
+        setting = form['setting'].save(commit=False)
+        setting.tester = self.request.user
+        setting.save()
+        ski = form['ski'].save(commit=False)
+        ski.setting = setting
+        ski.save()
         return super().form_valid(form)
 
 
@@ -195,7 +201,7 @@ class SettingUpdateView(UpdateView):
     model = Setting
     fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
     success_url = reverse_lazy("setting")
-    
+
     def get_form(self):
         form = super().get_form()
         form.fields['date'].widget = AdminDateWidget(attrs={'type': 'date'})

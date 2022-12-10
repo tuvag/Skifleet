@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'extra_views',
+    'betterforms',
 ]
 
 MIDDLEWARE = [

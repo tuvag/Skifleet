@@ -32,9 +32,9 @@
     </div>
   </div>
   {% for s in skitest %}
-<div class="card m-4" id="setting-card" onclick="location.href='{% url "setting-details" s.id %}'">
+<div class="card m-4" id="setting-card" onclick="location.href='{% url "setting-details" s.setting.id %}'">
   <div class="card-body m-3">
-    <strong>Ski rank: </strong> {{s.rank}} <br><br>
+    <strong>In this test ski number {{ ski.ski_number }} ranked: </strong> {{s.rank}}<br><br>
     <h5><strong>Date: </strong> {{ s.setting.date}} <br></h5>
     <strong>Temprature : </strong> {{ s.setting.temprature }} ℃<br> 
     <strong>Humidity: </strong> {{ s.setting.humidity}} % <br> 

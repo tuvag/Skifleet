@@ -1,28 +1,45 @@
 from django import forms
 from .models import Ski, Setting, Technique, SkiTest
 from django.contrib.auth.forms import PasswordResetForm
+from betterforms.multiform import MultiModelForm
+from django.contrib.admin.widgets import AdminDateWidget
 
-class SkiForm(forms.ModelForm):
+""" class SkiForm(forms.ModelForm):
 
     class Meta:
         model = Ski
-        fields = ('ski_number', 'technique', 'grind', 'brand', 'img', 'notes' ) 
+        fields = ('color_tag', 'ski_number', 'technique', 'grind', 'brand', 'img', 'notes' ) 
         labels = {
             'img': "Image",
         }
 
     def set_skiowner(self, User):
-        self.ski_owner = User
+        self.ski_owner = User """
 
 class SettingForm(forms.ModelForm):
-    date = forms.DateField(widget=forms.DateInput(format='%d%m%Y'),input_formats=['%d%m%Y'])
+    
     
     class Meta:
         model = Setting
         fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+        #date = forms.DateField(label=('date'), widget=AdminDateWidget())
 
     def set_tester(self, User):
         self.tester = User
+
+class SkiTestForm(forms.ModelForm):
+
+    class Meta:
+        model = SkiTest
+        fields = ('ski', 'rank') 
+
+    #ski = forms.ModelMultipleChoiceField(queryset=Ski.objects.all())
+
+class SettingCreationMultiForm(MultiModelForm):
+    form_classes = {
+        'setting': SettingForm,
+        'ski': SkiTestForm,
+    }
 
 
 class MyPasswordResetForm(PasswordResetForm):
@@ -41,7 +58,7 @@ class SkiSearchForm(forms.Form):
         label='Search:',
         widget=forms.TextInput(attrs={'placeholder': 'Ski details'})
     )
-    """ search_technique =  forms.ModelChoiceField(
+    """  search_technique =  forms.ModelChoiceField(
         required = False,
         widget=forms.ModelChoiceField(queryset=Technique)
     ) """

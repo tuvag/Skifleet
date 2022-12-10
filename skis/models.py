@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from colorfield.fields import ColorField
 
 
 class User(AbstractUser):
@@ -38,6 +37,9 @@ class Ski(models.Model):
     # you can filter based on, say, grind: "user.skis_owner.filter(grind="blahblah").
     ski_owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="skies_owned")
 
+    def __str__(self):
+        return str(self.ski_number)
+
     def save(self, *args, **kwargs):
         if self.url_img and not self.img:
             img_temp = NamedTemporaryFile(delete=True)
@@ -68,5 +70,6 @@ class SkiTest(models.Model):
     ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="ski_tested")
     setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="related_test")
     rank = models.IntegerField()
+
 
 
