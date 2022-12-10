@@ -11,9 +11,9 @@
             <strong>Location: </strong> {{ setting.location }} <br>
             <strong>Snow Type: </strong> {{ setting.snow_type }} <br>
             <strong>Notes: </strong> {{ setting.notes }} <br>
-            {% for ski in setting.skis.all %}
-            <strong>Skis: </strong> {{ ski.ski_number }}<br>
-            <strong>Rank: </strong> {{ ski.ski_number.rank }}<br>
+            {% for s in setting.skis.all %}
+            <strong>Skis: </strong> {{ s.ski_number }}<br>
+            <strong>Rank: </strong> {{ s.rank }}<br>
             {% endfor %}
         </div>
     </div>

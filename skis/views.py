@@ -9,6 +9,8 @@ from .forms import SkiForm, SettingForm, SkiSearchForm, SettingSearchForm
 from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from django_filters import BaseRangeFilter, NumberFilter, FilterSet
+from django.contrib.admin.widgets import AdminDateWidget
+#from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
 
 from .models import User, Ski, Setting, SkiTest
 
@@ -23,6 +25,37 @@ def index(request):
     else:
         skis
         return render(request, "skis/index.html", {'skis': skis})
+
+""" class SkiTestInline(InlineFormSetFactory):
+    model = SkiTest
+    fields = ['ski', 'rank']
+
+class SettingCreateView(CreateWithInlinesView):
+    model = Setting
+    inlines = [SkiTestInline]
+    fields = ['date', 'temprature', 'humidity', 'location', 'snow_type', 'notes']
+    template_name = 'skis/addsetting.html'
+
+    def get_success_url(self):
+        return reverse_lazy('addskitest')
+    
+    def form_valid(self, form):
+        form.instance.tester = self.request.user
+        return super().form_valid(form) """
+
+class SettingCreateView(CreateView):
+    model = Setting
+    fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+    success_url = reverse_lazy('addskitest')
+
+    def get_form(self):
+        form = super().get_form()
+        form.fields['date'].widget = AdminDateWidget(attrs={'type': 'date'})
+        return form
+
+    def form_valid(self, form):
+        form.instance.tester = self.request.user
+        return super().form_valid(form)
 
 
 class SkisFilter(BaseFilter):
@@ -41,7 +74,7 @@ class SettingsFilter(BaseFilter):
 class SkiSearchList(SearchListView):
     # regular django.views.generic.list.ListView configuration
     model = Ski
-    paginate_by = 10
+    #paginate_by = 10
     template_name = "skis/index.html"
     context_object_name = "skis"
 
@@ -49,10 +82,14 @@ class SkiSearchList(SearchListView):
     form_class = SkiSearchForm
     filter_class = SkisFilter
 
+    def get_queryset(self):
+        object_list = Ski.objects.filter(ski_owner = self.request.user.id)
+        return object_list
+
 class SettingSearchList(SearchListView):
     # regular django.views.generic.list.ListView configuration
     model = Setting
-    paginate_by = 10
+    #paginate_by = 10
     template_name = "skis/setting.html"
     context_object_name = "setting"
 
@@ -61,6 +98,10 @@ class SettingSearchList(SearchListView):
     # additional configuration for SearchListView
     form_class = SettingSearchForm
     filter_class = SettingsFilter
+
+    def get_queryset(self):
+        object_list = Setting.objects.filter(tester = self.request.user.id)
+        return object_list
 
 
 class SkiListView(ListView):
@@ -96,17 +137,27 @@ class SkiListView(ListView):
 
 class SkiCreateView(CreateView):
     model = Ski
-    fields = ('ski_number', 'technique', 'grind','color_tag', 'brand', 'img', 'notes')
+    fields = ('color_tag','ski_number', 'technique', 'grind', 'brand', 'img', 'notes')
     success_url = reverse_lazy('addski')
 
     def form_valid(self, form):
         form.instance.ski_owner = self.request.user
         return super().form_valid(form)
 
+    def get_form(self):
+        form = super().get_form()
+        form.fields['color_tag'].widget = forms.TextInput(attrs={'type': 'color'})
+        return form
+
 class SkiUpdateView(UpdateView):
     model = Ski
-    fields = ('ski_number', 'technique', 'grind', 'color_tag', 'brand', 'img', 'notes' )
+    fields = ('color_tag', 'ski_number', 'technique', 'grind', 'brand', 'img', 'notes' )
     success_url = reverse_lazy("index")
+
+    def get_form(self):
+        form = super().get_form()
+        form.fields['color_tag'].widget = forms.TextInput(attrs={'type': 'color'})
+        return form
 
 class SkiDeleteView(DeleteView):
     model = Ski
@@ -124,15 +175,6 @@ def addski(request):
     else:
         form = SkiForm()
         return render(request, "skis/addski.html", {"form": form})
-
-class SettingCreateView(CreateView):
-    model = Setting
-    fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
-    success_url = reverse_lazy('addskitest')
-
-    def form_valid(self, form):
-        form.instance.tester = self.request.user
-        return super().form_valid(form)
 
 
 
@@ -153,6 +195,11 @@ class SettingUpdateView(UpdateView):
     model = Setting
     fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
     success_url = reverse_lazy("setting")
+    
+    def get_form(self):
+        form = super().get_form()
+        form.fields['date'].widget = AdminDateWidget(attrs={'type': 'date'})
+        return form
 
 class SettingDeleteView(DeleteView):
     model = Setting
@@ -167,7 +214,8 @@ def ski_details(request, id):
 
 def setting_details(request, id):
     setting = Setting.objects.get(id= id)
-    return render(request,"skis/setting_details.html", {'setting': setting})
+    ski_test = SkiTest.objects.filter(setting=setting)
+    return render(request,"skis/setting_details.html", {'setting': setting, 'skitest':ski_test})
 
 def setting(request):
     return render(request, "skis/setting.html")

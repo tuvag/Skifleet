@@ -32,19 +32,18 @@
     </div>
   </div>
   {% for s in skitest %}
-  {% for d in setting %}
 <div class="card m-4" id="setting-card" onclick="location.href='{% url "setting-details" s.id %}'">
   <div class="card-body m-3">
     <strong>Ski rank: </strong> {{s.rank}} <br><br>
-    <h5><strong>Date: </strong> {{ d.date}} <br></h5>
-    <strong>Temprature : </strong> {{ d.temprature }} ℃<br> 
-    <strong>Humidity: </strong> {{ d.humidity}} % <br> 
-    <strong>Location: </strong> {{ d.location }} <br>
-    <strong>Snow Type: </strong> {{ d.snow_type }} <br>
-    <strong>Notes: </strong> {{ d.notes }} <br>
+    <h5><strong>Date: </strong> {{ s.setting.date}} <br></h5>
+    <strong>Temprature : </strong> {{ s.setting.temprature }} ℃<br> 
+    <strong>Humidity: </strong> {{ s.setting.humidity}} % <br> 
+    <strong>Location: </strong> {{ s.setting.location }} <br>
+    <strong>Snow Type: </strong> {{ s.setting.snow_type }} <br>
+    <strong>Notes: </strong> {{ s.setting.notes }} <br>
   </div>
 </div>
-{% endfor %}
+
 {% endfor %}
 
 

@@ -29,7 +29,7 @@ class Ski(models.Model):
     url_img = models.URLField()
 
     # is this an RGB value? 
-    color_tag = ColorField(default='#ffffff')
+    color_tag = models.CharField(max_length=7, default="#66A3BB")
 
     notes = models.CharField(max_length = 256)
 
@@ -68,4 +68,5 @@ class SkiTest(models.Model):
     ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="ski_tested")
     setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="related_test")
     rank = models.IntegerField()
+
 
