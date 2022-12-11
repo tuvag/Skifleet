@@ -11,8 +11,11 @@
     <br>
     <br>
     If you have any questions or concernes, please feel free to reach out! <br> <br>
-    <strong>Email: </strong>tuvag@live.no <br>
-    <strong>Phone number: </strong>907 903-2402
+    <form action="thanks" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
 </div>
 <div class="col-sm-4">
 <img src="media/images/skiing.jpeg" style="opacity: 100;">

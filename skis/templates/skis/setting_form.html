@@ -3,12 +3,12 @@
 {% block main %}
 
 <div class="container m-4">
-    <h1>Add a Ski Test</h1> <br>
+    <h1>Update Ski Test</h1> <br>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Add Test">
-        <input type="button" value="Cancel" onclick="location.href='{% url "index" %}'">
+        <input type="submit" value="Update">
+        <input type="button" value="Cancel" onclick="location.href='{% url "setting" %}'">
     </form>
 </div>
 

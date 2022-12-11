@@ -63,6 +63,9 @@ class Setting(models.Model):
     skis = models.ManyToManyField(Ski, related_name="settings", through='SkiTest')
     tester = models.ForeignKey(User, on_delete=models.CASCADE, related_name="skies_tested")
 
+    class Meta:
+       ordering = ['-date']
+
     def __str__(self):
         return self.location
 

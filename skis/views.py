@@ -5,11 +5,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django import forms
-from .forms import SettingForm, SkiSearchForm, SettingSearchForm, SettingCreationMultiForm
+from .forms import SettingForm, SkiSearchForm, SettingSearchForm, SettingCreationMultiForm, ContactForm
 from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from django_filters import BaseRangeFilter, NumberFilter, FilterSet
 from django.contrib.admin.widgets import AdminDateWidget
+from django.core.mail import send_mail, BadHeaderError
 #from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
 
 from .models import User, Ski, Setting, SkiTest
@@ -17,31 +18,6 @@ from .models import User, Ski, Setting, SkiTest
 #class NumberRangeFilter(BaseRangeFilter, NumberFilter):
 #    pass
 
-def index(request):
-    if 'search' in request.GET:
-        search = request.GET['search']
-        skis = Ski.objects.filter(title_icontains= search)
-        return render(request, "skis/index.html", {'skis': skis})
-    else:
-        skis
-        return render(request, "skis/index.html", {'skis': skis})
-
-""" class SkiTestInline(InlineFormSetFactory):
-    model = SkiTest
-    fields = ['ski', 'rank']
-
-class SettingCreateView(CreateWithInlinesView):
-    model = Setting
-    inlines = [SkiTestInline]
-    fields = ['date', 'temprature', 'humidity', 'location', 'snow_type', 'notes']
-    template_name = 'skis/addsetting.html'
-
-    def get_success_url(self):
-        return reverse_lazy('addskitest')
-    
-    def form_valid(self, form):
-        form.instance.tester = self.request.user
-        return super().form_valid(form) """
 
 class SettingCreateView(CreateView):
     form_class = SettingCreationMultiForm
@@ -52,17 +28,37 @@ class SettingCreateView(CreateView):
     """ def get_form(self):
         form = super().get_form()
         form.fields['date'].widget = AdminDateWidget(attrs={'type': 'date'})
-        return form
- """
+        return form """
+
     def form_valid(self, form):
         setting = form['setting'].save(commit=False)
         setting.tester = self.request.user
         setting.save()
-        ski = form['ski'].save(commit=False)
-        ski.setting = setting
-        ski.save()
+        ski1 = form['ski1'].save(commit=False)
+        ski1.setting = setting
+        ski1.save()
+        ski2 = form['ski2'].save(commit=False)
+        ski2.setting = setting
+        ski2.save()
+        ski3 = form['ski3'].save(commit=False)
+        ski3.setting = setting
+        ski3.save()
+        ski4 = form['ski4'].save(commit=False)
+        ski4.setting = setting
+        ski4.save()
+        ski5 = form['ski5'].save(commit=False)
+        ski5.setting = setting
+        ski5.save()
+        ski6 = form['ski6'].save(commit=False)
+        ski6.setting = setting
+        ski6.save()
+        ski7 = form['ski7'].save(commit=False)
+        ski7.setting = setting
+        ski7.save()
+        ski8 = form['ski8'].save(commit=False)
+        ski8.setting = setting
+        ski8.save()
         return super().form_valid(form)
-
 
 class SkisFilter(BaseFilter):
     search_fields = {
@@ -110,36 +106,12 @@ class SettingSearchList(SearchListView):
         return object_list
 
 
-class SkiListView(ListView):
-    model = Ski
-    template_name = "skis/index.html"
-    context_object_name = "skis"
-
-    """   def get_queryset(self):
-        if len(self.args) > 0:
-            return Ski.objects.filter(name__icontains=self.args[0])
-        else:
-            return Ski.objects.all() """
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if query:
-            object_list = self.model.objects.filter(name__icontains=query)
-        else:
-            object_list = Ski.objects.filter(ski_owner = self.request.user.id)
-        return object_list
-
-    """  query = self.request.GET.get('q')
-        if query:
-            object_list = Ski.objects.filter(name__icontains=query)
-        else:
-            object_list = Ski.objects.all()
-        return object_list """
- 
-    def get_context_data(self):
-       context = super().get_context_data()
-       context['banner'] = 'Ski Fleet'
-       return context
+def ski_details(request, id):
+    ski = Ski.objects.get(id= id)
+    ski_test = SkiTest.objects.filter(ski=ski)
+    details_setting = Setting.objects.filter(skis=ski)
+    return render(request,"skis/ski_details.html", {'ski': ski, 'skitest': ski_test, 'setting': details_setting})
+    #return render(request,"skis/ski_details.html", {'ski': ski})
 
 class SkiCreateView(CreateView):
     model = Ski
@@ -182,21 +154,6 @@ def addski(request):
         form = SkiForm()
         return render(request, "skis/addski.html", {"form": form})
 
-
-
-class SettingListView(ListView):
-    model = Setting
-    template_name = "skis/setting.html"
-    context_object_name = "setting"
-
-    def get_queryset(self):
-       return Setting.objects.filter(tester =self.request.user.id)
- 
-    def get_context_data(self):
-       context = super().get_context_data()
-       context['banner'] = 'Ski Tests'
-       return context
-
 class SettingUpdateView(UpdateView):
     model = Setting
     fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
@@ -211,20 +168,10 @@ class SettingDeleteView(DeleteView):
     model = Setting
     success_url = reverse_lazy("setting")
 
-def ski_details(request, id):
-    ski = Ski.objects.get(id= id)
-    ski_test = SkiTest.objects.filter(ski=ski)
-    details_setting = Setting.objects.filter(skis=ski)
-    return render(request,"skis/ski_details.html", {'ski': ski, 'skitest': ski_test, 'setting': details_setting})
-    #return render(request,"skis/ski_details.html", {'ski': ski})
-
 def setting_details(request, id):
     setting = Setting.objects.get(id= id)
     ski_test = SkiTest.objects.filter(setting=setting)
     return render(request,"skis/setting_details.html", {'setting': setting, 'skitest':ski_test})
-
-def setting(request):
-    return render(request, "skis/setting.html")
 
 def addsetting(request):
     if request.method == "POST":
@@ -268,11 +215,27 @@ def register(request):
 
 
 def contact(request):
-    return render(request, "skis/contact.html")
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = "Website Inquiry" 
+            body = {
+			'name': form.cleaned_data['first_name'], 
+			'email': form.cleaned_data['email_address'], 
+			'message':form.cleaned_data['message'], 
+			}
+            message = "\n".join(body.values())
+            try:
+                send_mail(subject, message, 'webmaster@localhost', ['webmaster@localhost']) 
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return HttpResponseRedirect('/thanks/')
+    else:
+        form = ContactForm()
+        return render(request, 'skis/contact.html', {'form':form})
+
+def thanks(request):
+    return render(request, 'skis/thanks.html')
 
 
-def add_skitest(request):
-    pass
 
-def skitest(request):
-    return render(request, "skis/skitest.html")

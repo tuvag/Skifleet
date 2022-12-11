@@ -31,14 +31,21 @@ class SkiTestForm(forms.ModelForm):
 
     class Meta:
         model = SkiTest
-        fields = ('ski', 'rank') 
+        fields = ('ski', 'rank')
 
     #ski = forms.ModelMultipleChoiceField(queryset=Ski.objects.all())
 
 class SettingCreationMultiForm(MultiModelForm):
     form_classes = {
         'setting': SettingForm,
-        'ski': SkiTestForm,
+        'ski1': SkiTestForm,
+        'ski2': SkiTestForm,
+        'ski3': SkiTestForm,
+        'ski4': SkiTestForm,
+        'ski5': SkiTestForm,
+        'ski6': SkiTestForm,
+        'ski7': SkiTestForm,
+        'ski8': SkiTestForm,
     }
 
 
@@ -79,3 +86,7 @@ class SettingSearchForm(forms.Form):
                     widget=forms.NumberInput(attrs={'type': 'date'})
                   )
 
+class ContactForm(forms.Form):
+    name = forms.CharField(label='Name', max_length=150)
+    email = forms.EmailField(label='Email address', max_length=150)
+    message = forms.CharField(label='Message',widget = forms.Textarea, max_length = 1000)

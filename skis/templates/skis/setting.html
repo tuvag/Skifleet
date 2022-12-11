@@ -12,6 +12,7 @@
   </form>
 
 {% for s in setting %}
+
 <div class="card m-4" onclick="location.href='{% url "setting-details" s.id %}'">
   <div class="card-header p-4">
     <h3><strong>Date: </strong> {{ s.date }}</h3>

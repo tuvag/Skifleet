@@ -1,18 +1,11 @@
-  body > header { 
-    padding: 0 0.5rem .75rem 0.5rem;
-  }
-  
-  body > .setting_details{
-    grid-template-columns: 10% 80% 10%;
-  }
-  
-  .form-control {
-    width: 50%;
-  }
+body > header { 
+  padding: 0 0.5rem .75rem 0.5rem;
+}
 
-  #backgorund_img{
-    background: url("media/images/skibilde.jpeg") 50% 0 no-repeat fixed;
-    color: white;
-    height: 650px;
-    padding: 100px 0 0 0;   
-    }
+body > .setting_details{
+  grid-template-columns: 10% 80% 10%;
+}
+
+.form-control {
+  width: 50%;
+}
