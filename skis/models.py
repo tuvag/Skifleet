@@ -70,9 +70,9 @@ class Setting(models.Model):
         return self.location
 
 class SkiTest(models.Model):
-    ski = models.ForeignKey(Ski, on_delete=models.CASCADE, related_name="ski_tested")
+    ski = models.ForeignKey(Ski, blank=True, on_delete=models.CASCADE, related_name="ski_tested")
     setting = models.ForeignKey(Setting, on_delete=models.CASCADE, related_name="related_test")
-    rank = models.IntegerField()
+    rank = models.IntegerField(blank=True)
 
 
 

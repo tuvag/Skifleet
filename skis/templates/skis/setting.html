@@ -23,9 +23,9 @@
     <strong>Location: </strong> {{ s.location }} <br>
     <strong>Snow Type: </strong> {{ s.snow_type }} <br>
     <strong>Notes: </strong> {{ s.notes }} <br>
-    {% for ski in s.skis.all %}
-    <strong>Skis: </strong> {{ ski.ski_number }}<br>
-    <strong>Rank: </strong> {{ ski.rank }}<br>
+    {% for st in s.related_test.all %}
+    <strong>Skis: </strong> {{ st.ski.ski_number }}<br>
+    <strong>Rank: </strong> {{ st.rank }}<br>
     {% endfor %}
   </div>
 </div>

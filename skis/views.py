@@ -34,30 +34,38 @@ class SettingCreateView(CreateView):
         setting = form['setting'].save(commit=False)
         setting.tester = self.request.user
         setting.save()
-        ski1 = form['ski1'].save(commit=False)
-        ski1.setting = setting
-        ski1.save()
-        ski2 = form['ski2'].save(commit=False)
-        ski2.setting = setting
-        ski2.save()
-        ski3 = form['ski3'].save(commit=False)
-        ski3.setting = setting
-        ski3.save()
-        ski4 = form['ski4'].save(commit=False)
-        ski4.setting = setting
-        ski4.save()
-        ski5 = form['ski5'].save(commit=False)
-        ski5.setting = setting
-        ski5.save()
-        ski6 = form['ski6'].save(commit=False)
-        ski6.setting = setting
-        ski6.save()
-        ski7 = form['ski7'].save(commit=False)
-        ski7.setting = setting
-        ski7.save()
-        ski8 = form['ski8'].save(commit=False)
-        ski8.setting = setting
-        ski8.save()
+        if form['ski1'].cleaned_data['ski'] != None:
+            ski1 = form['ski1'].save(commit=False)
+            ski1.setting = setting
+            ski1.save()
+        if form['ski2'].cleaned_data['ski'] != None:
+            ski2 = form['ski2'].save(commit=False)
+            ski2.setting = setting
+            ski2.save()
+        if form['ski3'].cleaned_data['ski'] != None:
+            ski3 = form['ski3'].save(commit=False)
+            ski3.setting = setting
+            ski3.save()
+        if form['ski4'].cleaned_data['ski'] != None:
+            ski4 = form['ski4'].save(commit=False)
+            ski4.setting = setting
+            ski4.save()
+        if form['ski5'].cleaned_data['ski'] != None:
+            ski5 = form['ski5'].save(commit=False)
+            ski5.setting = setting
+            ski5.save()
+        if form['ski6'].cleaned_data['ski'] != None:
+            ski6 = form['ski6'].save(commit=False)
+            ski6.setting = setting
+            ski6.save()
+        if form['ski7'].cleaned_data['ski'] != None:
+            ski7 = form['ski7'].save(commit=False)
+            ski7.setting = setting
+            ski7.save()
+        if form['ski8'].cleaned_data['ski'] != None:
+            ski8 = form['ski8'].save(commit=False)
+            ski8.setting = setting
+            ski8.save()
         return super().form_valid(form)
 
 class SkisFilter(BaseFilter):
