@@ -12,20 +12,34 @@ class SettingForm(forms.ModelForm):
         model = Setting
         fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
         widgets = {
-            'date': SelectDateWidget(),
+            'date': SelectDateWidget,
         }
         labels = {
             'date': 'When?',
         }
 
-
     def set_tester(self, User):
         self.tester = User
+
+    # This form is only used as part of a SettingCreationMultiForm. 
+    # The view handling that form is responsible for saving the model
+    # created by this form directly, so the save() method here should 
+    # not actually save the object. 
+    def save(self, commit):
+        return super().save(commit=False)
 
 class SkiTestForm(forms.ModelForm):
     class Meta:
         model = SkiTest
         fields = ('ski', 'rank')
+
+    # This form is only used as part of a SettingCreationMultiForm. 
+    # The view handling that form is responsible for saving the model
+    # created by this form directly, so the save() method here should 
+    # not actually save the object. 
+    def save(self, commit):
+        return super().save(commit=False)
+        
 
 class SettingCreationMultiForm(MultiModelForm):
     form_classes = {
