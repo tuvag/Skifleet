@@ -7,3 +7,6 @@ django-filter==22.1
 django-search-views==0.3.7
 Pillow==9.3.0
 sqlparse==0.4.3
+python-http-client==3.3.7
+sendgrid==6.9.7
+starkbank-ecdsa==2.2.0
