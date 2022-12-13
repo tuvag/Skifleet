@@ -3,37 +3,29 @@ from .models import Ski, Setting, Technique, SkiTest
 from django.contrib.auth.forms import PasswordResetForm
 from betterforms.multiform import MultiModelForm
 from django.contrib.admin.widgets import AdminDateWidget
+from django.forms.widgets import SelectDateWidget
 
-""" class SkiForm(forms.ModelForm):
-
-    class Meta:
-        model = Ski
-        fields = ('color_tag', 'ski_number', 'technique', 'grind', 'brand', 'img', 'notes' ) 
-        labels = {
-            'img': "Image",
-        }
-
-    def set_skiowner(self, User):
-        self.ski_owner = User """
 
 class SettingForm(forms.ModelForm):
-    
     
     class Meta:
         model = Setting
         fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
-        #date = forms.DateField(label=('date'), widget=AdminDateWidget())
+        widgets = {
+            'date': SelectDateWidget(),
+        }
+        labels = {
+            'date': 'When?',
+        }
+
 
     def set_tester(self, User):
         self.tester = User
 
 class SkiTestForm(forms.ModelForm):
-
     class Meta:
         model = SkiTest
         fields = ('ski', 'rank')
-
-    #ski = forms.ModelMultipleChoiceField(queryset=Ski.objects.all())
 
 class SettingCreationMultiForm(MultiModelForm):
     form_classes = {

@@ -15,20 +15,11 @@ from django.core.mail import send_mail, BadHeaderError
 
 from .models import User, Ski, Setting, SkiTest
 
-#class NumberRangeFilter(BaseRangeFilter, NumberFilter):
-#    pass
-
-
 class SettingCreateView(CreateView):
     form_class = SettingCreationMultiForm
-    #fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
-    success_url = reverse_lazy('addskitest')
+    success_url = reverse_lazy('setting')
     template_name = "skis/addsetting.html"
 
-    """ def get_form(self):
-        form = super().get_form()
-        form.fields['date'].widget = AdminDateWidget(attrs={'type': 'date'})
-        return form """
 
     def form_valid(self, form):
         setting = form['setting'].save(commit=False)
@@ -124,7 +115,7 @@ def ski_details(request, id):
 class SkiCreateView(CreateView):
     model = Ski
     fields = ('color_tag','ski_number', 'technique', 'grind', 'brand', 'img', 'notes')
-    success_url = reverse_lazy('addski')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         form.instance.ski_owner = self.request.user
