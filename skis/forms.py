@@ -4,6 +4,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from betterforms.multiform import MultiModelForm
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.widgets import SelectDateWidget
+from datetime import datetime
 
 
 class SettingForm(forms.ModelForm):
@@ -11,12 +12,17 @@ class SettingForm(forms.ModelForm):
     class Meta:
         model = Setting
         fields = ('date', 'temprature', 'humidity', 'location', 'snow_type', 'notes')
+        current_year = datetime.now().year
         widgets = {
-            'date': SelectDateWidget,
+            'date': SelectDateWidget(years=range(current_year - 20, current_year + 2)),
         }
         labels = {
             'date': 'When?',
         }
+    def __init__(self, *args, **kwargs):
+        super(SettingForm, self).__init__(*args, **kwargs)
+        if not self.instance.date:
+            self.fields['date'].initial = datetime.today().date()
 
     def set_tester(self, User):
         self.tester = User
