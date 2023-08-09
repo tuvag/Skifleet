@@ -20,6 +20,11 @@ class SettingCreateView(CreateView):
     success_url = reverse_lazy('setting')
     template_name = "skis/addsetting.html"
 
+    def get_form_kwargs(self):
+        kwargs = super(SettingCreateView, self).get_form_kwargs()
+        # Add the current user to form keyword arguments
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         setting = form['setting'].save(commit=False)

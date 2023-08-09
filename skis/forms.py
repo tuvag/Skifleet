@@ -33,6 +33,12 @@ class SkiTestForm(forms.ModelForm):
         model = SkiTest
         fields = ('ski', 'rank')
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(SkiTestForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['ski'].queryset = Ski.objects.filter(ski_owner=user)
+
     # This form is only used as part of a SettingCreationMultiForm. 
     # The view handling that form is responsible for saving the model
     # created by this form directly, so the save() method here should 
@@ -54,6 +60,12 @@ class SettingCreationMultiForm(MultiModelForm):
         'ski8': SkiTestForm,
     }
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(SettingCreationMultiForm, self).__init__(*args, **kwargs)
+        if user:
+            for form_name in ['ski1', 'ski2', 'ski3', 'ski4', 'ski5', 'ski6', 'ski7', 'ski8']:
+                self.forms[form_name].fields['ski'].queryset = Ski.objects.filter(ski_owner=user)
 
 class MyPasswordResetForm(PasswordResetForm):
    def is_valid(self):
